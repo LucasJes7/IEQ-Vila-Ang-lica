@@ -1,0 +1,25 @@
+*{
+    margin: 0%;
+}
+
+body{
+ font-family: serif;
+}
+
+#contentList {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+}
+
+#contentList > div, #contentList > img, #contentList > iframe {
+    margin-bottom: 20px; 
+}
+
+#sec-1{
+    background: rgb(73, 73, 73);
+    padding: 10px;
+    color: aliceblue;
+    text-align: center;
+}

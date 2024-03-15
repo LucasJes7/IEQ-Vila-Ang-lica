@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=S, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://unpkg.com/realm-web/dist/bundle.iife.js"></script>
+    </head>
+    <body>
+        <section id="sec-1">
+            <h1>Igreja Evangélica Quadrangular Vila Angélica</h1>
+        </section>
+        <section id="sec-2">
+            <div id="contentList"></div>
+        </section>
+        <footer>
+            By Lucas José do EspÍrito Santo
+        </footer>
+        <script>
+            async function displayContents()    {
+                const app = new Realm.App({ id: 'ieq-0-czwkz' });
+                const credentials = Realm.Credentials.anonymous();
+                const user = await app.logIn(credentials);
+
+                const mongo = app.currentUser.mongoClient('mongodb-atlas')
+                //console.log('GOT MONGO CLIENT')
+                const contentCol = mongo.db('ieq').collection('content')
+                //console.log('GOT COLLECTION')
+
+                const contents = await contentCol.find()
+//                const contents = await contentCol.find({ page: "65f1b811eadc1a861d0bd077" })
+                console.log("contents", contents)
+
+                let list = document.getElementById("contentList")
+                contents.forEach((content) => {
+                    if(content.type == 'TEXT')  {
+                        let div = document.createElement("div")
+                        div.innerText = content.text
+                        list.appendChild(div)
+                    }
+                    else if(content.type == 'IMAGE')  {
+                        let img = document.createElement("img")
+                        img.src = content.image
+                        img.width="560"
+                        img.height="400"
+                        list.appendChild(img)
+                    }
+                    else if(content.type == 'VIDEO')  {
+                        let iframe = document.createElement("iframe")
+                        iframe.width="560"
+                        iframe.height="315"
+                        iframe.frameborder="0"
+                        iframe.src = content.video
+                        list.appendChild(iframe)
+                    }
+                })
+            }
+            displayContents()
+        </script>
+    </body>
+</html>
